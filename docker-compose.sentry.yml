@@ -1,0 +1,63 @@
+version: '3.7'
+
+services:
+  sentry:
+    image: getsentry/sentry:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - SENTRY_SECRET_KEY=${SENTRY_SECRET_KEY}
+      - SENTRY_POSTGRES_HOST=postgres
+      - SENTRY_DB_USER=sentry
+      - SENTRY_DB_PASSWORD=sentry
+      - SENTRY_REDIS_HOST=redis
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - sentry-data:/var/lib/sentry/files
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=sentry
+      - POSTGRES_USER=sentry
+      - POSTGRES_PASSWORD=sentry
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+
+  sentry-cron:
+    image: getsentry/sentry:latest
+    command: "/etc/sentry/entrypoint.sh run cron"
+    environment:
+      - SENTRY_SECRET_KEY=${SENTRY_SECRET_KEY}
+      - SENTRY_POSTGRES_HOST=postgres
+      - SENTRY_DB_USER=sentry
+      - SENTRY_DB_PASSWORD=sentry
+      - SENTRY_REDIS_HOST=redis
+    depends_on:
+      - postgres
+      - redis
+
+  sentry-worker:
+    image: getsentry/sentry:latest
+    command: "/etc/sentry/entrypoint.sh run worker"
+    environment:
+      - SENTRY_SECRET_KEY=${SENTRY_SECRET_KEY}
+      - SENTRY_POSTGRES_HOST=postgres
+      - SENTRY_DB_USER=sentry
+      - SENTRY_DB_PASSWORD=sentry
+      - SENTRY_REDIS_HOST=redis
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+  postgres-data:
+  redis-data:
+  sentry-data:
