@@ -1,0 +1,345 @@
+openapi: 3.0.3
+info:
+  title: FlyProx API
+  description: >
+    API для проекта FlyProx — аутентификация через **Google и Apple (Supabase Auth)**, 
+    а данные пользователей и системные метрики — через Express и PostgreSQL.
+  version: 1.0.0
+  contact:
+    name: FlyProx API Support
+    url: https://flyprox.com
+    email: support@flyprox.com
+
+servers:
+  - url: http://localhost:3000
+    description: Development
+  - url: https://api.flyprox.com
+    description: Production
+
+tags:
+  - name: Authentication
+    description: Supabase OAuth (Google и Apple)
+  - name: Users
+    description: Управление пользователями
+  - name: Health
+    description: Проверка состояния сервиса
+  - name: Metrics
+    description: Метрики производительности
+
+security:
+  - BearerAuth: []
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        JWT-токен, выданный Supabase после входа через Google или Apple.  
+        Пример: `Authorization: Bearer <supabase_jwt>`
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        pages:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: AUTHENTICATION_FAILED
+            message:
+              type: string
+            details:
+              type: object
+              nullable: true
+            timestamp:
+              type: string
+              format: date-time
+            path:
+              type: string
+              example: /api/users
+
+paths:
+  /api/users:
+    get:
+      tags: [Users]
+      summary: Получить список пользователей
+      description: Возвращает список пользователей с пагинацией и поиском.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: Номер страницы (по умолчанию 1)
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          required: false
+          description: Количество записей на странице (по умолчанию 10)
+        - name: search
+          in: query
+          schema:
+            type: string
+          required: false
+          description: Поиск по username или email
+      responses:
+        "200":
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/users/{id}:
+    get:
+      tags: [Users]
+      summary: Получить данные пользователя
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Данные пользователя
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        "404":
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags: [Users]
+      summary: Обновить данные пользователя
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+      responses:
+        "200":
+          description: Успешное обновление
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: User updated successfully
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags: [Users]
+      summary: Удалить пользователя
+      description: >
+        Удаляет пользователя из PostgreSQL и из Supabase Auth (через Admin API).  
+        Доступно только администратору.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Пользователь успешно удалён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: User deleted successfully
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/health:
+    get:
+      tags: [Health]
+      summary: Проверка состояния сервиса
+      description: Возвращает базовый статус API и зависимостей.
+      responses:
+        "200":
+          description: Успешный ответ
+          content:
+            application/json:
+              example:
+                success: true
+                data:
+                  status: healthy
+                  timestamp: "2025-10-10T12:00:00Z"
+                  version: "1.0.0"
+                  uptime: 12345
+                  services:
+                    database:
+                      status: connected
+                      responseTime: 5
+                    supabase:
+                      status: reachable
+                      responseTime: 42
+
+  /api/health/detailed:
+    get:
+      tags: [Health]
+      summary: Детальная диагностика
+      description: Только для администраторов (требуется JWT).
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Подробная диагностика системы
+          content:
+            application/json:
+              example:
+                success: true
+                data:
+                  status: healthy
+                  uptime: 12345
+                  cpuUsage: 0.35
+                  memoryUsage: 62.3
+                  database:
+                    pool:
+                      active: 2
+                      idle: 8
+
+  /api/metrics:
+    get:
+      tags: [Metrics]
+      summary: Метрики производительности
+      description: Возвращает текущие метрики приложения.
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Успешный ответ
+          content:
+            application/json:
+              example:
+                success: true
+                data:
+                  timestamp: "2025-10-10T12:00:00Z"
+                  uptime: 12345
+                  requests:
+                    total: 1000
+                    perMinute: 25
+                    successRate: 0.98
+                  performance:
+                    averageResponseTime: 120
+                    p95ResponseTime: 250
+                  database:
+                    connectionPool:
+                      active: 2
+                      idle: 8
