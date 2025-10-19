@@ -1,13 +1,19 @@
- аутентификация через **Google и Apple с использованием Supabase Auth**, а все остальные данные — в **PostgreSQL через ваш собственный Express-бэкенд**.
+ Аутентификация через **Google и Apple с использованием Supabase Auth**, а все остальные данные — в **PostgreSQL через ваш собственный Express-бэкенд**.
 
 
-# API Documentation — FlyProx
+# API Documentation — Proximol
 
 ## 📋 Общая информация
 
 **Base URL**  
-- Development: `http://localhost:3000`  
-- Production: `https://api.flyprox.com`
+- Development: `http://localhost:3003`  backend 
+
+### Proximol:
+
+- **Backend**: 3003
+- **Frontend**: 3004
+- **PostgreSQL**: 5433
+- **Redis**: 6381
 
 **Формат данных**  
 - Content-Type: `application/json`  
@@ -61,10 +67,6 @@ await supabase.auth.signInWithOAuth({ provider: 'apple' });
 **Заголовки**:  
 `Authorization: Bearer <supabase_jwt>`  
 
-**Query-параметры**:  
-- `page` (number, опционально): номер страницы (по умолчанию: 1)  
-- `limit` (number, опционально): количество записей (по умолчанию: 10)  
-- `search` (string, опционально): поиск по username/email  
 
 **Ответ (200)**:
 ```json
@@ -269,7 +271,7 @@ await supabase.auth.signInWithOAuth({ provider: 'apple' });
 // Получение данных пользователя после входа через Supabase
 const { data: { session } } = await supabase.auth.getSession();
 
-const res = await fetch('http://localhost:3000/api/users/me', {
+const res = await fetch('http://localhost:3003/api/users/me', {
   headers: {
     'Authorization': `Bearer ${session.access_token}`
   }
@@ -283,6 +285,6 @@ curl http://localhost:3000/api/health
 
 # Получение списка пользователей (с токеном от Supabase)
 curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
-  http://localhost:3000/api/users
+  http://localhost:3003/api/users
 ```
 

@@ -15,9 +15,8 @@ FlyProx построен по классической архитектуре
 - Error handling
 ```
 
-🔒 Security
 Supabase OAuth
-Frontend (Next.js + Supabase Auth)
+Frontend (Expo)
 Express API (Routes → Controllers → Services)
 PostgreSQL 
 ↓
