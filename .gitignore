@@ -108,3 +108,4 @@ out
 
 # MCP server configurations
 mcp.json
+/src/generated/prisma

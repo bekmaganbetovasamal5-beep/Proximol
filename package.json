@@ -2,21 +2,36 @@
   "name": "my-backend",
   "version": "1.0.0",
   "description": "Backend сервис проекта",
-  "main": "index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "@supabase/supabase-js": "^2.81.0",
+    "@types/cors": "^2.8.19",
+    "@types/pg": "^8.15.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^5.1.0",
+    "firebase-admin": "^13.6.0",
     "pg": "^8.16.3",
     "playwright": "^1.56.0",
-    "redis": "^5.8.2"
+    "posthog-node": "^5.11.2",
+    "prisma": "^6.19.0",
+    "redis": "^5.8.2",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=22"

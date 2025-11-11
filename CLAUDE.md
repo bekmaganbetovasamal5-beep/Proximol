@@ -1,3 +1,7 @@
+Проект называется "Proximol" 
+
+Комиты делаем вот на этот гит хаб  https://github.com/bekmaganbetovasamal5-beep/Proximol 
+
 Everytime read instructions from file 
 NOTES.md
 API_DOCS.md , ARCHITECTURE.md , CHANGELOG.md ,CONTRIBUTING.md, DEPLOYMENT.md NOTES.md openapi.yaml SUMMARY.md TODO.md
@@ -10,13 +14,24 @@ API_DOCS.md , ARCHITECTURE.md , CHANGELOG.md ,CONTRIBUTING.md, DEPLOYMENT.md NOT
    
 2. Обнови файл summary.md с текущим состоянием проекта
 
-Файлы находятся в корне проекта:
 
-Architecture
-Supabase OAuth
-Frontend (Next.js + Tailwind CSS + Supabase Auth)
-Express API (Routes → Controllers → Services)
-PostgreSQL 
-↓
-MCP Integrations 
-
+Архитектура проекта 
+ MOBILE APP (Expo)             │
+│  Framework: Expo SDK 52+                │
+│  Language: TypeScript ✅                │
+│  UI Library: Tamagui                    │
+│  Navigation: Expo Router                │
+│  State: React Query (данные с сервера)  │
+│         + Zustand (локальный state)     │
+│  Push: react-native-firebase (FCM)      │
+└─────────────────────────────────────────┘
+              ↕ HTTP/REST
+┌─────────────────────────────────────────┐
+│          BACKEND (Express)              │
+│  Framework: Express.js                  │
+│  Language: TypeScript ✅                │
+│  Auth: Supabase (Service Layer)         │
+│  Validation: Zod                        │
+│  Database: PostgreSQL + Prisma          │
+│  Push: Firebase Admin SDK (FCM)         │
+│  Analytics: PostHog  (облачная будет )            

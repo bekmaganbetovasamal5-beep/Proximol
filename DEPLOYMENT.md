@@ -47,7 +47,7 @@ npm run dev
 ### Сборка образа
 ```bash
 # Локальная сборка
-docker build -t flyprox:latest .
+docker build -t 
 
 
 
