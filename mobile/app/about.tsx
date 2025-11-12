@@ -288,7 +288,7 @@ export default function AboutScreen() {
                 <Ionicons name="globe-outline" size={20} color="#4ECDC4" />
               </View>
               <View style={styles.contactInfo}>
-                <Text style={styles.contactTitle">Веб-сайт</Text>
+                <Text style={styles.contactTitle}>Веб-сайт</Text>
                 <Text style={styles.contactDescription}>proximol.app</Text>
               </View>
               <Ionicons name="chevron-forward" size={16} color="#B8B8D0" />

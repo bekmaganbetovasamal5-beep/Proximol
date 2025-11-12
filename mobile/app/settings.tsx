@@ -415,19 +415,19 @@ export default function SettingsScreen() {
 
         {/* Privacy */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle">Конфиденциальность</Text>
+          <Text style={styles.sectionTitle}>Конфиденциальность</Text>
           {privacySettings.map(renderSettingItem)}
         </View>
 
         {/* App Settings */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle">Приложение</Text>
+          <Text style={styles.sectionTitle}>Приложение</Text>
           {appSettings.map(renderSettingItem)}
         </View>
 
         {/* Data Management */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle">Управление данными</Text>
+          <Text style={styles.sectionTitle}>Управление данными</Text>
           {dataSettings.map(renderSettingItem)}
         </View>
 

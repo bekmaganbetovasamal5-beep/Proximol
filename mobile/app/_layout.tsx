@@ -41,24 +41,27 @@ export default function RootLayout() {
           <Stack.Screen name="profile/photo-upload" />
           <Stack.Screen name="profile/main" />
 
-          {/* Main app screens */}
+          {/* Polls screens */}
           <Stack.Screen name="polls/main" />
-          <Stack.Screen name="polls/voting-1" />
-          <Stack.Screen name="polls/voting-2" />
-          <Stack.Screen name="polls/voting-3" />
-          <Stack.Screen name="polls/voting-4" />
+          <Stack.Screen name="polls/detail" />
+          <Stack.Screen name="polls/completed" />
+          <Stack.Screen name="polls/create" />
+          <Stack.Screen name="polls/invite" />
 
           {/* Results screens */}
           <Stack.Screen name="results/main" />
-          <Stack.Screen name="results/compliment-1" />
-          <Stack.Screen name="results/compliment-2" />
-          <Stack.Screen name="results/compliment-3" />
-          <Stack.Screen name="results/compliment-4" />
-          <Stack.Screen name="results/compliment-5" />
+          <Stack.Screen name="results/detail" />
+          <Stack.Screen name="results/compliments" />
+          <Stack.Screen name="results/stats" />
+          <Stack.Screen name="results/share" />
 
           {/* Additional screens */}
           <Stack.Screen name="notifications" />
           <Stack.Screen name="about" />
+          <Stack.Screen name="settings" />
+
+          {/* Profile screens */}
+          <Stack.Screen name="profile/edit" />
         </Stack>
       </QueryClientProvider>
     </SafeAreaProvider>

@@ -426,7 +426,7 @@ export default function ResultsStatsScreen() {
             <View style={styles.insightItem}>
               <View style={styles.insightIcon}>
                 <Ionicons name="star-outline" size={20} color="#FFD700" />
-              </Text>
+              </View>
               <Text style={styles.insightText}>
                 Создайте свой опрос, чтобы узнать мнение одноклассников
               </Text>

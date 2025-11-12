@@ -349,7 +349,7 @@ export default function ResultsShareScreen() {
 
         {/* Share Options */}
         <View style={styles.shareSection}>
-          <Text style={styles.sectionTitle">Отправить в</Text>
+          <Text style={styles.sectionTitle}>Отправить в</Text>
           <View style={styles.shareGrid}>
             {shareOptions.map((option) => (
               <TouchableOpacity

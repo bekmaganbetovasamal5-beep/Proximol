@@ -338,11 +338,11 @@ export default function ResultsDetailScreen() {
           <View style={styles.complimentActions}>
             <TouchableOpacity style={styles.complimentAction}>
               <Ionicons name="thumbs-up-outline" size={16} color="#4ECDC4" />
-              <Text style={styles.complimentActionText">Спасибо</Text>
+              <Text style={styles.complimentActionText}>Спасибо</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.complimentAction}>
               <Ionicons name="share-outline" size={16} color="#636E72" />
-              <Text style={styles.complimentActionText">Поделиться</Text>
+              <Text style={styles.complimentActionText}>Поделиться</Text>
             </TouchableOpacity>
           </View>
         </View>
